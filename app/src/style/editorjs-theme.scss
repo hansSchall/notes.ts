@@ -1,0 +1,132 @@
+// .dark-mode .cdx-simple-image__picture--with-border,
+// .dark-mode .cdx-input {
+//     border-color: var(--color-border-light);
+// }
+
+// .dark-mode .ce-example__button {
+//     box-shadow: 0 24px 18px -14px rgba(4, 154, 255, 0.24);
+// }
+
+// .dark-mode .ce-example__output {
+//     background-color: #17191f;
+// }
+
+// .dark-mode .inline-code {
+//     background-color: rgba(53, 56, 68, 0.62);
+//     color: #727683;
+// }
+
+// .dark-mode a {
+//     color: #959ba8;
+// }
+
+// .dark-mode .ce-example__statusbar-toggler,
+// .dark-mode .ce-example__statusbar-button {
+//     background-color: #343842;
+// }
+
+// .dark-mode .ce-example__statusbar-toggler::before {
+//     transform: translateX(calc(var(--toggler-size) * 2.2 - var(--toggler-size)));
+// }
+
+// .dark-mode .ce-example__statusbar-toggler::after {
+//     content: '*';
+//     right: auto;
+//     left: 6px;
+//     top: 7px;
+//     color: #fff;
+//     box-shadow: none;
+//     font-size: 32px;
+// }
+
+// .dark-mode.show-block-boundaries .ce-block,
+// .dark-mode.show-block-boundaries .ce-block__content {
+//     box-shadow: 0 0 0 1px rgba(128, 144, 159, 0.09) inset;
+// }
+
+// .dark-mode.thin-mode .ce-example__content {
+//     border-color: var(--color-border-light);
+// }
+
+// .dark-mode .ce-example__statusbar-item:not(:last-of-type)::after {
+//     color: var(--color-border-light);
+// }
+
+.dark-mode .ce-block--selected .ce-block__content,
+.dark-mode ::selection {
+    background-color: rgba(57, 68, 84, 0.57);
+}
+
+// .dark-mode .ce-toolbox__button,
+// .dark-mode .ce-toolbar__settings-btn,
+// .dark-mode .ce-toolbar__plus {
+//     color: inherit;
+// }
+
+// .dark-mode .ce-stub {
+//     opacity: 0.3;
+// }
+
+
+
+.inlineToolButton,
+.ce-toolbar__plus,
+.ce-toolbar__settings-btn,
+.ce-popover__search {
+    background-color: #2b2b2b;
+    color: white;
+}
+
+.ce-toolbar__plus:hover,
+.ce-toolbar__settings-btn:hover,
+.cdx-loader,
+.cdx-button {
+    color: white;
+    background-color: #262626;
+}
+
+.cdx-button:hover {
+    background-color: #2f2f2f;
+}
+
+
+.ce-popover,
+.ce-popover-item,
+.ce-popover-item__icon,
+.ce-popover-items,
+.ce-popover-item:hover {
+    --color-background-item-hover: #2f2f2f;
+    background-color: #262626;
+    color: white;
+    border: none;
+}
+
+
+.ce-inline-toolbar {
+    background-color: #222;
+    border-color: #555;
+}
+
+.ce-inline-tool {
+    color: #fff;
+
+    &:hover {
+        background-color: #333;
+    }
+
+    &.ce-inline-tool--active {
+        color: $c0;
+    }
+}
+
+.ce-inline-toolbar__dropdown {
+    color: #fff;
+
+    &:hover {
+        background-color: #333;
+    }
+
+    &.ce-inline-toolbar__dropdown--active {
+        color: $c0;
+    }
+}
