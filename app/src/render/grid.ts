@@ -1,31 +1,35 @@
-import { vec2, vec4 } from "../lib/vec";
+import { Vec2, Vec4 } from "../lib/vectors";
 import { getDevice, getShaderModule, presentationFormat } from "./webgpu";
 
 export interface GridFormat {
-    border: vec4,
-    bgColor: vec4,
-    lineColor: vec4,
-    grid: vec2,
-    lineWidth: vec2,
-    page: vec2,
+    border: Vec4,
+    bgColor: Vec4,
+    lineColor: Vec4,
+    grid: Vec2,
+    lineWidth: Vec2,
+    page: Vec2,
+}
+
+function mm2px(page: Vec2, obj: Vec2) {
+
 }
 
 export function gridFormat(f: GridFormat): Float32Array {
-    const sizeU = f.page[0] - f.border[0] - f.border[2];
-    const sizeV = f.page[1] - f.border[1] - f.border[3];
-    const overU = f.grid[0] > f.page[0] ? 0 : (f.grid[0] - (sizeU % f.grid[0]) + f.lineWidth[0]) / 2;
-    const overV = f.grid[1] > f.page[1] ? 0 : (f.grid[1] - (sizeV % f.grid[1]) + f.lineWidth[1]) / 2;
+    const sizeU = f.page.x - f.border.$1 - f.border.$3;
+    const sizeV = f.page.y - f.border.$2 - f.border.$4;
+    const overU = f.grid.x > f.page.x ? 0 : (f.grid.x - (sizeU % f.grid.x) + f.lineWidth.x) / 2;
+    const overV = f.grid.y > f.page.y ? 0 : (f.grid.y - (sizeV % f.grid.y) + f.lineWidth.y) / 2;
     // const over = 0;
 
     const arr = new Float32Array([
-        f.border[0] - overU,
-        f.border[1] - overV,
-        f.border[2] - overU,
-        f.border[3] - overV,
-        ...f.grid,
-        ...f.lineWidth,
-        ...f.bgColor,
-        ...f.lineColor,
+        f.border.$1 - overU,
+        f.border.$2 - overV,
+        f.border.$3 - overU,
+        f.border.$4 - overV,
+        ...f.grid.xy,
+        ...f.lineWidth.xy,
+        ...f.bgColor.rgba,
+        ...f.lineColor.rgba,
     ]);
     return arr;
 }
@@ -70,7 +74,7 @@ export function initGrid() {
 
 
     renderBackground = (format, view) => {
-        device.queue.writeBuffer(pageSize, 0, new Float32Array(format.page));
+        device.queue.writeBuffer(pageSize, 0, new Float32Array(format.page.xy));
         const grid = gridFormat(format);
         // console.log(grid);
         // device.queue.writeBuffer(lbgSettings, 0, new Float32Array([15, 15, 15, 15, 100000, 10, .5, .5, 1, 1, 1, 1, .5, .5, .5, 1]));

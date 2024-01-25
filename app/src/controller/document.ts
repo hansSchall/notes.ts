@@ -112,9 +112,10 @@ export enum PageLayerType {
 }
 
 export abstract class PageLayerModel {
-    constructor(readonly uid: string, readonly type: PageLayerType) {
+    constructor(readonly uid: string) {
 
     }
+    readonly abstract type: PageLayerType;
     pack() {
         return {
             uid: this.uid,
@@ -124,8 +125,9 @@ export abstract class PageLayerModel {
 }
 
 export class PageImgLayerModel extends PageLayerModel {
+    type = PageLayerType.IMG;
     constructor(uid: string) {
-        super(uid, PageLayerType.IMG);
+        super(uid);
     }
     src = signal("");
     // height = signal(0);
@@ -138,8 +140,9 @@ export class PageImgLayerModel extends PageLayerModel {
 }
 
 export class PagePatternLayerModel extends PageLayerModel {
+    type = PageLayerType.PATTERN;
     constructor(uid: string) {
-        super(uid, PageLayerType.PATTERN);
+        super(uid);
     }
     pattern = signal<WeakGridFormat>(defaultGridFormat());
     // height = signal(0);
@@ -152,8 +155,9 @@ export class PagePatternLayerModel extends PageLayerModel {
 }
 
 export class PageDrawLayerModel extends PageLayerModel {
+    type = PageLayerType.DRAW;
     constructor(uid: string) {
-        super(uid, PageLayerType.DRAW);
+        super(uid);
     }
     pack() {
         return {
@@ -163,8 +167,9 @@ export class PageDrawLayerModel extends PageLayerModel {
 }
 
 export class PageObjectLayerModel extends PageLayerModel {
+    type = PageLayerType.OBJECT;
     constructor(uid: string) {
-        super(uid, PageLayerType.OBJECT);
+        super(uid);
     }
     pack() {
         return {
@@ -174,8 +179,9 @@ export class PageObjectLayerModel extends PageLayerModel {
 }
 
 export class PageTextLayerModel extends PageLayerModel {
+    type = PageLayerType.TEXT;
     constructor(uid: string) {
-        super(uid, PageLayerType.OBJECT);
+        super(uid);
     }
     pack() {
         return {

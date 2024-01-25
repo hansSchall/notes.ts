@@ -4,7 +4,7 @@ import lock from "simple-promise-locks";
 import { Panic } from "../lib/panic";
 import { signal } from "@preact/signals";
 import { GridFormat, initGrid, renderBackground } from "./grid";
-import { vec2, vec4 } from "../lib/vec";
+import { Vec2, Vec4 } from "../lib/vectors";
 
 export async function loadShader(id: string): Promise<GPUShaderModuleDescriptor> {
     const response = await fetch(new URL(`/shaders/${id}.wgsl`, location.href));
@@ -100,7 +100,7 @@ export async function initWebGPU() {
 //     device.queue.submit([commandBuffer]);
 // }
 
-export class WebGPUGraphicsLayer {
+export abstract class WebGPUGraphicsLayer {
     constructor() {
         const context = this.canvas.getContext("webgpu");
         if (!context) {
@@ -115,22 +115,25 @@ export class WebGPUGraphicsLayer {
     readonly device = getDevice();
     readonly canvas = document.createElement("canvas");
     readonly context: GPUCanvasContext;
-    public page = vec2(0, 0);
+    public page = new Vec2(0, 0);
     public setPageDimensions(u: number, v: number) {
-        this.page = vec2(u, v);
+        this.page = new Vec2(u, v);
     }
     protected updateCanvasSize() {
         const rect = this.canvas.getBoundingClientRect();
         // console.log(this.canvas);
-        this.canvas.width = rect.width * 2;
-        this.canvas.height = rect.height * 2;
+        this.canvas.width = Math.round(rect.width * 2);
+        this.canvas.height = Math.round(rect.height * 2);
+    }
+    public dispose() {
+
     }
 }
 
 export type WeakGridFormat = Omit<GridFormat, "bgColor" | "lineColor" | "page">;
 
 export class WebGPUBackgroundLayer extends WebGPUGraphicsLayer {
-    render(style: WeakGridFormat, bgColor: vec4, lineColor: vec4) {
+    render(style: WeakGridFormat, bgColor: Vec4, lineColor: Vec4) {
         this.updateCanvasSize();
         let format: GridFormat = {
             bgColor,
@@ -139,6 +142,7 @@ export class WebGPUBackgroundLayer extends WebGPUGraphicsLayer {
             ...style,
         };
 
+        console.log(`rendering`);
         renderBackground?.(format, this.context.getCurrentTexture().createView());
         // console.log("render", style);
         // const device = getDevice();

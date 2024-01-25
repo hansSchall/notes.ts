@@ -5,6 +5,7 @@ import { Signal } from "@preact/signals";
 import { S, ToggleON } from "../lib/signal";
 import { importSidebar, pagesSidebar } from "./uiState";
 import { redo, redoAvailable, undo, undoAvailable } from "../controller/document";
+import { zoomIn, zoomLevel, zoomOut, zoomSet } from "./ContentView";
 
 const colors = new Map<string, string>(); // color => label
 colors.set("#000", "Black");
@@ -69,6 +70,12 @@ export function Toolbar() {
         <ToolbarGroup title="Sidebars">
             <ToolbarItem icon="bi-book" active={S(pagesSidebar)} onClick={ToggleON(pagesSidebar)}>Seiten</ToolbarItem>
             <ToolbarItem icon="bi-camera" active={S(importSidebar)} onClick={ToggleON(importSidebar)}>Scan-Import</ToolbarItem>
+        </ToolbarGroup>
+        <ToolbarGroup title="Ansicht">
+            <ToolbarItem icon="bi-zoom-in" onClick={zoomIn}>Zoom In</ToolbarItem>
+            <ToolbarItem icon="bi-zoom-out" onClick={zoomOut}>Zoom Out</ToolbarItem>
+            <ToolbarItem icon="bi-house" onClick={() => zoomSet(1)}>Zoom Home</ToolbarItem>
+            {S(zoomLevel)}
         </ToolbarGroup>
     </div>;
 }

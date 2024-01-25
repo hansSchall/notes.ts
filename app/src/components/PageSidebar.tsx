@@ -1,10 +1,12 @@
-import { PageLayerModel, PageLayerType, PageModel, journal } from "../controller/document";
+import { PageLayerModel, PageLayerType, PageModel, PagePatternLayerModel, journal } from "../controller/document";
 import { Assign, AssignON, S, ToggleON } from "../lib/signal";
 import { options, pagesSidebar, selectedLayer, selectedPage } from "./uiState";
 import { PaperFormat } from "./Paper";
 import { useSignal } from "@preact/signals";
 import { active } from "../lib/activeClass";
 import { useMemo } from "preact/hooks";
+import { gridFormat } from "../render/grid";
+import { gridFormatEquals, gridFormatLabel, gridFormats } from "../render/grids";
 
 function getSelectedPage() {
     return S(journal.pages).find($ => $.uid === S(selectedPage));
@@ -249,13 +251,48 @@ function PageOptionsContent({ page }: {
 }
 
 function LayerOptions() {
+    const pageId = S(selectedPage);
+    const layerId = S(selectedLayer);
+    const page = useMemo(() => S(journal.pages).find($ => $.uid === pageId), [pageId]);
+    const layer = useMemo(() => page && S(page.layers).find($ => $.uid === layerId), [page, layerId]);
+
+    if (!page || !layer)
+        return null;
+
+    else
+        return <LayerOptionsContent page={page} layer={layer} />;
+}
+
+function LayerOptionsContent({ page, layer }: {
+    page: PageModel;
+    layer: PageLayerModel,
+}) {
     return <div class={`tk-sidebar -left`}>
         <div class={`tk-header`}>
             <div class={`-label`}>Layer-Einstellungen</div>
             <div class={`-button`} onClick={AssignON(options, false)}><i class={`bi-x-lg`} /></div>
         </div>
         <div class={`tk-content`}>
+            {layer instanceof PagePatternLayerModel ? <PatternLayerOptions page={page} layer={layer} /> : null}
         </div>
     </div>;
 }
 
+function PatternLayerOptions({ layer }: {
+    page: PageModel;
+    layer: PagePatternLayerModel,
+}) {
+    return <div class={`di-option`}>
+        <div class={`-label`}>Format</div>
+        <div class={`tk-b-list`}>
+            {
+                [...gridFormats.entries()]
+                    .map(
+                        ([id, format]) =>
+                            <div class={`tk-b-button ${gridFormatEquals(S(layer.pattern), format()) ? "-active" : "-inactive"}`} onClick={() => {
+                                layer.pattern.value = format();
+                            }} key={id}>{gridFormatLabel.get(id)}</div>)}
+        </div>
+    </div>;
+
+}
